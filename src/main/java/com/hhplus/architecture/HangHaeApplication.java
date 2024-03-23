@@ -1,13 +1,13 @@
-package com.hhplus.architecture.hhplusarchitecturejava;
+package com.hhplus.architecture;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class HhplusArchitectureJavaApplication {
+public class HangHaeApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(HhplusArchitectureJavaApplication.class, args);
+    SpringApplication.run(HangHaeApplication.class, args);
   }
 
 }
