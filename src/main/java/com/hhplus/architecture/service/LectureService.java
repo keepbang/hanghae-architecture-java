@@ -5,6 +5,7 @@ import com.hhplus.architecture.domain.Lecture;
 import com.hhplus.architecture.dto.LectureDto;
 import com.hhplus.architecture.dto.LectureHistoryDto;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * create on 3/23/24. create by IntelliJ IDEA.

@@ -20,7 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @version 1.0
  * @since 1.0
  */
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class LectureIntegrationTest {
 
   @Autowired
@@ -29,12 +29,12 @@ public class LectureIntegrationTest {
   @Test
   void 동시성_실패_테스트() throws InterruptedException {
     // given
-    int numberOfThreads = 101;
+    int numberOfThreads = 60;
     ExecutorService executorService = Executors.newFixedThreadPool(10);
     CountDownLatch latch = new CountDownLatch(numberOfThreads);
     LectureDto dto = lectureService.saveLecture(
         "토요 특강",
-        100L,
+        30L,
         System.currentTimeMillis(),
         LocalDateTime.now()
             .plusDays(3L)
@@ -57,7 +57,7 @@ public class LectureIntegrationTest {
     // then
     Long count = lectureService.countApplyUserByLectureId(1L);
 
-    assertThat(count).isEqualTo(100L);
+    assertThat(count).isEqualTo(30L);
 
   }
 
