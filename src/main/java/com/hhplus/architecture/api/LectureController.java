@@ -1,11 +1,17 @@
 package com.hhplus.architecture.api;
 
+import com.hhplus.architecture.dto.CreateLectureRequest;
+import com.hhplus.architecture.dto.LectureDto;
+import com.hhplus.architecture.dto.LectureHistoryDto;
 import com.hhplus.architecture.service.LectureService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,16 +32,28 @@ public class LectureController {
 
   private final LectureService lectureService;
 
-  /**
-   * TODO - 특강 신청 API
-   */
-  @PostMapping("/{lectureId}/users/{userId}")
-  public ResponseEntity<Boolean> apply(@PathVariable Long lectureId,
-      @PathVariable Long userId) {
-    return ResponseEntity.ok(lectureService.userApply(lectureId, userId));
+  @PostMapping
+  public ResponseEntity<LectureDto> saveLecture(@RequestBody CreateLectureRequest request) {
+    return new ResponseEntity<>(
+        lectureService.saveLecture(
+            request.name(),
+            request.maxUser(),
+            request.startApplyMillis(),
+            request.startLectureMillis()
+        )
+        , HttpStatus.CREATED
+    );
   }
 
-  /**
-   * TODO - 특강 신청 여부 조회 API
-   */
+  @PostMapping("/{lectureId}/users/{userId}")
+  public ResponseEntity<LectureHistoryDto> apply(@PathVariable Long lectureId,
+      @PathVariable Long userId) {
+    return ResponseEntity.ok(lectureService.userApply(userId, lectureId));
+  }
+
+  @GetMapping("/{lectureId}/users/{userId}")
+  public ResponseEntity<Boolean> isApplyBy(@PathVariable Long lectureId,
+      @PathVariable Long userId) {
+    return ResponseEntity.ok(lectureService.isApplyByLectureIdAndUserId(lectureId, userId));
+  }
 }

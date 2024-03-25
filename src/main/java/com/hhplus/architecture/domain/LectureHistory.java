@@ -1,41 +1,44 @@
 package com.hhplus.architecture.domain;
 
-import java.util.Objects;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.Getter;
 
 /**
- * create on 2024/03/25.
- * create by IntelliJ IDEA.
+ * create on 3/25/24. create by IntelliJ IDEA.
  *
  * <p> 클래스 설명 </p>
  *
- * @author Gibyoung Chae (keepbang)
+ * @author Gibyung Chae (Keepbang)
  * @version 1.0
  * @since 1.0
  */
-public record LectureHistory(
-    long id,
-    long userId,
-    long lectureId,
-    long applyMillis
-) {
+@Entity
+@Getter
+public class LectureHistory {
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    LectureHistory that = (LectureHistory) o;
-    return Objects.equals(id, that.id)
-        && Objects.equals(userId, that.userId)
-        && Objects.equals(lectureId, that.lectureId)
-        && Objects.equals(applyMillis, that.applyMillis);
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+
+  @Column(name = "user_id")
+  private Long userId;
+
+  @Column(name = "lecture_id")
+  private Long lectureId;
+
+  @Column(name = "apply_millis")
+  private Long applyMillis;
+
+  protected LectureHistory() {
   }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, userId, lectureId, applyMillis);
+  public LectureHistory(Long userId, Long lectureId, Long applyMillis) {
+    this.userId = userId;
+    this.lectureId = lectureId;
+    this.applyMillis = applyMillis;
   }
 }

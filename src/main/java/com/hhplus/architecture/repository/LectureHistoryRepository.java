@@ -1,6 +1,9 @@
 package com.hhplus.architecture.repository;
 
 import com.hhplus.architecture.domain.LectureHistory;
+import jakarta.persistence.LockModeType;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 
 /**
  * create on 2024/03/25.
@@ -12,31 +15,12 @@ import com.hhplus.architecture.domain.LectureHistory;
  * @version 1.0
  * @since 1.0
  */
-public interface LectureHistoryRepository {
+public interface LectureHistoryRepository extends JpaRepository<LectureHistory, Long> {
 
-  /**
-   * 특정 강의 신청 수 조회.
-   *
-   * @param lectureId 강의 아이디.
-   * @return 신청한 사용자 수.
-   */
-  long countApplyByLectureId(long lectureId);
+  @Lock(LockModeType.PESSIMISTIC_WRITE)
+  long countAllByLectureId(long lectureId);
 
-  /**
-   * 이미 강의를 신청했는지 조회.
-   *
-   * @param userId    사용자 아이디.
-   * @param lectureId 강의 아이디.
-   * @return true(신청함), false(신청안함).
-   */
-  boolean isAlreadyApplyByUserIdAndLectureId(long userId, long lectureId);
-
-  /**
-   * 강의 신청(저장).
-   *
-   * @param userId    사용자 아이디.
-   * @param lectureId 강의 아이디.
-   */
-  LectureHistory save(long userId, long lectureId);
+  @Lock(LockModeType.PESSIMISTIC_WRITE)
+  boolean existsByUserIdAndLectureId(long userId, long lectureId);
 
 }

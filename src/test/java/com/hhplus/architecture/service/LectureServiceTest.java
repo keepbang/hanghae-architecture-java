@@ -1,19 +1,21 @@
 package com.hhplus.architecture.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.hhplus.architecture.common.exception.MaxApplyException;
-import com.hhplus.architecture.repository.StubLectureHistoryRepository;
-import com.hhplus.architecture.repository.StubLectureManager;
-import java.time.LocalDateTime;
+import com.hhplus.architecture.common.exception.LectureApplyException;
+import com.hhplus.architecture.dto.LectureHistoryDto;
+import com.hhplus.architecture.stub.StubLectureHistoryManager;
+import com.hhplus.architecture.stub.StubLectureManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 /**
- * create on 2024/03/25.
- * create by IntelliJ IDEA.
+ * create on 2024/03/25. create by IntelliJ IDEA.
  *
  * <p> 클래스 설명 </p>
  *
@@ -23,45 +25,83 @@ import org.junit.jupiter.api.Test;
  */
 class LectureServiceTest {
 
-  public LectureHistoryManager lectureHistoryManager;
+  public StubLectureHistoryManager lectureHistoryManager = new StubLectureHistoryManager();
 
-  public LectureManager lectureManager;
+  public StubLectureManager lectureManager = new StubLectureManager();
 
   public LectureService lectureService;
 
   @BeforeEach
   public void setUp() {
-    this.lectureHistoryManager = new LectureHistoryManager(
-        new StubLectureHistoryRepository()
+    this.lectureService = new LectureService(
+        lectureManager,
+        lectureHistoryManager
     );
-
-    this.lectureManager = new LectureManager(
-        new StubLectureManager()
-    );
-
-    this.lectureService = new LectureService(lectureManager, lectureHistoryManager);
   }
 
   // 신청자가 초과되면 exception 발생
-  @Test
-  @DisplayName("신청자 수가 초과되면 MaxApplyException 발생")
-  void lectureApply_overMaxApplyCount_exceptionTest() {
+  @ParameterizedTest
+  @ValueSource(ints = {
+      30, 31
+  })
+  @DisplayName("신청자 수가 초과되면 실패한다.")
+  void lectureApply_overMaxApplyCount_fileTest(int userCount) {
     // given
-    String lectureName = "토요특강";
-    long maxUser = 30L;
-    long startApplyMillis = System.currentTimeMillis();
-    long startLectureMillis = LocalDateTime.now()
-        .plusDays(3L)
-        .getNano();
-
-    lectureService.saveLecture(lectureName, maxUser, startApplyMillis, startLectureMillis);
-
-
-    // when, then
+    lectureHistoryManager.initList(userCount); // 사용자 추가
+    // when
+    // then
     assertThatThrownBy(() -> lectureService.userApply(1L, 1L))
-        .isInstanceOf(MaxApplyException.class);
+        .isInstanceOf(LectureApplyException.class)
+        .hasMessage("최대 신청수를 초과했습니다.");
   }
 
   // 이미 신청했을 경우 exception 발생
+  @Test
+  @DisplayName("이미 신청한 내역이 존재하면 실패한다.")
+  void lectureApply_alreadyApply_failTest() {
+    // given
+    lectureHistoryManager.initList(1); // 사용자 추가
+
+    // when
+    // then
+    assertThatThrownBy(() -> lectureService.userApply(1L, 1L))
+        .isInstanceOf(LectureApplyException.class)
+        .hasMessage("이미 신청했습니다.");
+  }
+
+  // 강의 신청 성공.
+  @Test
+  @DisplayName("강의 신청 성공")
+  void lectureApply_ok() {
+    // given
+    Long userId = 1L;
+    Long lectureId = 1L;
+
+    // when
+    LectureHistoryDto lectureHistoryDto = lectureService.userApply(userId, lectureId);
+
+    // then
+    assertThat(lectureHistoryDto.userId()).isEqualTo(userId);
+    assertThat(lectureHistoryDto.lectureId()).isEqualTo(lectureId);
+  }
+
+  // 특강 신청 여부 조회 테스트
+  @ParameterizedTest
+  @CsvSource(value = {
+      "1, true", "0, false"
+  })
+  @DisplayName("특강 신청에 성공할경우")
+  void isApplyByLectureIdAndUserId_ok(int count, boolean result) {
+    // given
+    lectureHistoryManager.initList(count); // 사용자 추가
+
+    // when
+    Boolean isApply = lectureService.isApplyByLectureIdAndUserId(1L, 1L);
+
+    // then
+    assertThat(isApply).isEqualTo(result);
+
+  }
+
 
 }

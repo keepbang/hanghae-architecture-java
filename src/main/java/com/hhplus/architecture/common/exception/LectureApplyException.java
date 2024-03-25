@@ -10,11 +10,8 @@ package com.hhplus.architecture.common.exception;
  * @version 1.0
  * @since 1.0
  */
-public class MaxApplyException extends RuntimeException {
-
-  private static final String MESSAGE = "최대 신청수를 초과했습니다.";
-
-  public MaxApplyException() {
-    super(MESSAGE);
+public class LectureApplyException extends RuntimeException {
+  public LectureApplyException(String message) {
+    super(message);
   }
 }
