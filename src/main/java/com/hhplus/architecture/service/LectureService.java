@@ -1,7 +1,5 @@
 package com.hhplus.architecture.service;
 
-import com.hhplus.architecture.common.exception.LectureApplyException;
-import com.hhplus.architecture.domain.Lecture;
 import com.hhplus.architecture.dto.LectureDto;
 import com.hhplus.architecture.dto.LectureHistoryDto;
 import org.springframework.stereotype.Service;
@@ -21,11 +19,14 @@ public class LectureService {
 
   private final LectureManager lectureManager;
   private final LectureHistoryManager lectureHistoryManager;
+  private final LectureValidator lectorValidator;
 
   public LectureService(LectureManager lectureManager,
-      LectureHistoryManager lectureHistoryManager) {
+      LectureHistoryManager lectureHistoryManager,
+      LectureValidator lectorValidator) {
     this.lectureManager = lectureManager;
     this.lectureHistoryManager = lectureHistoryManager;
+    this.lectorValidator = lectorValidator;
   }
 
 
@@ -49,20 +50,18 @@ public class LectureService {
    * @param userId    사용자 아이디.
    * @param lectureId 강의 아이디.
    */
+  @Transactional
   public LectureHistoryDto userApply(Long userId, Long lectureId) {
-    long totalApplyCount = lectureHistoryManager.countApplyByLectureId(lectureId);
     LectureDto lectureDto = lectureManager.findById(lectureId);
 
-    if (totalApplyCount >= lectureDto.maxUser()) {
-      throw new LectureApplyException("최대 신청수를 초과했습니다.");
-    }
+    lectorValidator.validUserCount(
+        lectureHistoryManager.countApplyByLectureId(lectureId),
+        lectureDto.maxUser()
+    );
 
-    boolean isAlready = lectureHistoryManager.isAlreadyApplyByUserIdAndLectureId(
-        userId, lectureId);
-
-    if (isAlready) {
-      throw new LectureApplyException("이미 신청했습니다.");
-    }
+    lectorValidator.validAlreadyApply(
+        lectureHistoryManager.isAlreadyApplyByUserIdAndLectureId(userId, lectureId)
+    );
 
     return lectureHistoryManager.save(userId, lectureId);
   }

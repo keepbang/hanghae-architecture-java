@@ -35,8 +35,8 @@ class LectureServiceTest {
   public void setUp() {
     this.lectureService = new LectureService(
         lectureManager,
-        lectureHistoryManager
-    );
+        lectureHistoryManager,
+        new LectureValidator());
   }
 
   // 신청자가 초과되면 exception 발생
