@@ -11,8 +11,9 @@ import java.time.LocalDateTime;
  * @version 1.0
  * @since 1.0
  */
-public record UserSingUpResponse(
-    LocalDateTime singUpDateTime // 특강 등록 시간
+public record UserApplyResponse(
+    boolean isApply, // 특강 신청 여부
+    LocalDateTime applyDateTime // 특강 등록 시간
 ) {
 
 }

@@ -1,6 +1,5 @@
 package com.hhplus.architecture.api;
 
-import com.hhplus.architecture.dto.UserSingUpResponse;
 import com.hhplus.architecture.service.LectureService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Slf4j
 @RestController
-@RequestMapping("/singup")
+@RequestMapping("/lecture")
 @RequiredArgsConstructor
 public class LectureController {
 
@@ -30,9 +29,10 @@ public class LectureController {
   /**
    * TODO - 특강 신청 API
    */
-  @PostMapping("/{id}")
-  public ResponseEntity<UserSingUpResponse> singUp(@PathVariable Long id) {
-    return ResponseEntity.ok(lectureService.userSingUp(id));
+  @PostMapping("/{lectureId}/users/{userId}")
+  public ResponseEntity<Boolean> apply(@PathVariable Long lectureId,
+      @PathVariable Long userId) {
+    return ResponseEntity.ok(lectureService.userApply(lectureId, userId));
   }
 
   /**
