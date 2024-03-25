@@ -76,6 +76,13 @@ public class LectureService {
     return lectureHistoryManager.countApplyByLectureId(lectureId);
   }
 
+  /**
+   * 강의신청 성공/실패 조회
+   *
+   * @param lectureId 강의 아이디.
+   * @param userId    사용자 아이디.
+   * @return 성공/실패 여부.
+   */
   public Boolean isApplyByLectureIdAndUserId(Long lectureId, Long userId) {
     return lectureHistoryManager.isAlreadyApplyByUserIdAndLectureId(userId, lectureId);
   }
