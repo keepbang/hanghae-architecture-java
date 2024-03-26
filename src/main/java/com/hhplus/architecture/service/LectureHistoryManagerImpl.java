@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
  * @since 1.0
  */
 @Component
-@Transactional(readOnly = true)
 public class LectureHistoryManagerImpl implements LectureHistoryManager {
 
   private final LectureHistoryRepository lectureHistoryRepository;
@@ -36,7 +35,6 @@ public class LectureHistoryManagerImpl implements LectureHistoryManager {
   }
 
   @Override
-  @Transactional
   public LectureHistoryDto save(long userId, long lectureId) {
     LectureHistory lectureHistory = new LectureHistory(userId, lectureId,
         System.currentTimeMillis());

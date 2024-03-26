@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
  * @since 1.0
  */
 @Component
-@Transactional(readOnly = true)
 public class LectureManagerImpl implements LectureManager {
 
   private final LectureRepository lectureRepository;
@@ -27,7 +26,6 @@ public class LectureManagerImpl implements LectureManager {
     this.lectureRepository = lectureRepository;
   }
 
-  @Transactional
   @Override
   public LectureDto save(String name, long maxUser, long startApplyMillis,
       long startLectureMillis) {

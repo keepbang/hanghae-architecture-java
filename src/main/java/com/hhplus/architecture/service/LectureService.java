@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @since 1.0
  */
 @Service
+@Transactional(readOnly = true)
 public class LectureService {
 
   private final LectureManager lectureManager;
@@ -39,6 +40,7 @@ public class LectureService {
    * @param startLectureMillis 신청 종료 시간.
    * @return 저장된 강의.
    */
+  @Transactional
   public LectureDto saveLecture(String name, long maxUser, long startApplyMillis,
       long startLectureMillis) {
     return lectureManager.save(name, maxUser, startApplyMillis, startLectureMillis);
@@ -67,7 +69,7 @@ public class LectureService {
   }
 
   /**
-   * 강의 조회.
+   * 특정 강의를 들은 학생 수 조회.
    *
    * @param lectureId 강의 아이디.
    * @return 강의 정보.
