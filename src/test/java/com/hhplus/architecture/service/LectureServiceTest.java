@@ -90,7 +90,7 @@ class LectureServiceTest {
   @CsvSource(value = {
       "1, true", "0, false"
   })
-  @DisplayName("특강 신청에 성공할경우")
+  @DisplayName("특강 신청 여부 조회.")
   void isApplyByLectureIdAndUserId_ok(int count, boolean result) {
     // given
     lectureHistoryManager.initList(count); // 사용자 추가

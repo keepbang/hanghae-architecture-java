@@ -37,38 +37,9 @@ public class LectureIntegrationTest {
     CountDownLatch latch = new CountDownLatch(numberOfThreads);
 
     // 강의 등록
-    lectureService.saveLecture(
-        "토요일 특강",
-        30L,
-        LocalDateTime.now()
-            .plusDays(1L)
-            .getNano(),
-        LocalDateTime.now()
-            .plusDays(3L)
-            .getNano()
-    );
-
-    lectureService.saveLecture(
-        "금요일 특강",
-        30L,
-        LocalDateTime.now()
-            .plusDays(1L)
-            .getNano(),
-        LocalDateTime.now()
-            .plusDays(3L)
-            .getNano()
-    );
-
-    lectureService.saveLecture(
-        "목요일 특강",
-        30L,
-        LocalDateTime.now()
-            .plusDays(1L)
-            .getNano(),
-        LocalDateTime.now()
-            .plusDays(3L)
-            .getNano()
-    );
+    saveLecture("목요일 특강");
+    saveLecture("토요일 특강");
+    saveLecture("금요일 특강");
 
     // 실패한 사용자를 담기위한 큐
     ConcurrentLinkedQueue<Long> queue = new ConcurrentLinkedQueue<>();
@@ -100,6 +71,19 @@ public class LectureIntegrationTest {
     // 실패한 사용자 수 검증
     assertThat(queue.size()).isEqualTo(30L);
 
+  }
+
+  private void saveLecture(String name) {
+    lectureService.saveLecture(
+        name,
+        30L,
+        LocalDateTime.now()
+            .plusDays(1L)
+            .getNano(),
+        LocalDateTime.now()
+            .plusDays(3L)
+            .getNano()
+    );
   }
 
 }
