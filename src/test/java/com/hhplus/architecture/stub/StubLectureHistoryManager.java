@@ -19,12 +19,9 @@ public class StubLectureHistoryManager implements LectureHistoryManager {
 
   private List<LectureHistoryDto> lectureHistories = new ArrayList<>();
 
-  int cursor = 1;
-
   @Override
   public LectureHistoryDto save(long userId, long lectureId) {
     LectureHistoryDto dto = new LectureHistoryDto(
-        cursor++,
         userId,
         lectureId,
         System.currentTimeMillis()

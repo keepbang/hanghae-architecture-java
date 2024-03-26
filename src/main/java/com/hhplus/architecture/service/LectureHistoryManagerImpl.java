@@ -43,7 +43,6 @@ public class LectureHistoryManagerImpl implements LectureHistoryManager {
 
     LectureHistory savedHistory = lectureHistoryRepository.save(lectureHistory);
     return new LectureHistoryDto(
-        savedHistory.getId(),
         savedHistory.getUserId(),
         savedHistory.getLectureId(),
         savedHistory.getApplyMillis()

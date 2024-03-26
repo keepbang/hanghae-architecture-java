@@ -11,7 +11,6 @@ package com.hhplus.architecture.dto;
  * @since 1.0
  */
 public record LectureHistoryDto(
-    long id,
     long userId,
     long lectureId,
     long applyMillis
