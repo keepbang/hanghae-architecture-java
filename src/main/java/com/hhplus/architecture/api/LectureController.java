@@ -4,6 +4,7 @@ import com.hhplus.architecture.dto.CreateLectureRequest;
 import com.hhplus.architecture.dto.LectureDto;
 import com.hhplus.architecture.dto.LectureHistoryDto;
 import com.hhplus.architecture.service.LectureService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Slf4j
 @RestController
-@RequestMapping("/lecture")
+@RequestMapping("/lectures")
 @RequiredArgsConstructor
 public class LectureController {
 
@@ -37,6 +38,14 @@ public class LectureController {
     return new ResponseEntity<>(
         lectureService.saveLecture(request)
         , HttpStatus.CREATED
+    );
+  }
+
+  @GetMapping
+  public ResponseEntity<List<LectureDto>> findAllLectures() {
+    return new ResponseEntity<>(
+        lectureService.findAllLectures()
+        , HttpStatus.OK
     );
   }
 

@@ -1,6 +1,7 @@
 package com.hhplus.architecture.service;
 
 import com.hhplus.architecture.dto.LectureDto;
+import java.util.List;
 
 /**
  * create on 3/25/24. create by IntelliJ IDEA.
@@ -31,5 +32,12 @@ public interface LectureManager {
    * @return 저장된 특강.
    */
   LectureDto save(String name, long maxUser, long startApplyMillis, long startLectureMillis);
+
+  /**
+   * 등록된 특강 목록 조회.
+   *
+   * @return  특강 목록.
+   */
+  List<LectureDto> findAll();
 
 }

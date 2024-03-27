@@ -3,6 +3,7 @@ package com.hhplus.architecture.service;
 import com.hhplus.architecture.dto.CreateLectureRequest;
 import com.hhplus.architecture.dto.LectureDto;
 import com.hhplus.architecture.dto.LectureHistoryDto;
+import java.util.List;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -93,5 +94,14 @@ public class LectureService {
    */
   public Boolean isApplyByLectureIdAndUserId(Long lectureId, Long userId) {
     return lectureHistoryManager.isAlreadyApplyByUserIdAndLectureId(userId, lectureId);
+  }
+
+  /**
+   * 특강 목록 조회.
+   *
+   * @return  특강 목록.
+   */
+  public List<LectureDto> findAllLectures() {
+    return lectureManager.findAll();
   }
 }

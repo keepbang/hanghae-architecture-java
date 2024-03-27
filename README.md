@@ -3,7 +3,7 @@
 
 ## API List
 ### [특강 등록 API](#특강-등록-api) (`추가`)
-### [특강 목록 조회]
+### [특강 목록 조회 API](#특강-목록-조회-api)
 ### [특강 신청 API](#특강-신청-api) (`핵심`)
 ### [특강 신청 여부 조회 API](#특강-신청-여부-조회-api)
 
@@ -47,7 +47,7 @@ ALTER TABLE lecture_history COMMENT '특강 신청 이력 테이블';
 - 특강 이름은 중복될 수 없습니다.
 
 ```
-POST http://{SERVER_URL}/lecture
+POST http://{SERVER_URL}/lectures
 ```
 - **Request body**
 
@@ -76,6 +76,26 @@ POST http://{SERVER_URL}/lecture
 
 ---
 
+### 특강 목록 조회 API
+
+- 사용자들이 각 특강 목록을 조회할 수 있다.
+
+```
+GET http://{SERVER_URL}/lectures
+```
+
+- **Response body**
+
+| 파라미터             | 타입        | 필수여부 | 설명       |
+|------------------|-----------|------|----------|
+| id               | integer   | Y    | 특강 아이디   |
+| name             | string    | Y    | 특강 이름    |
+| maxUser          | integer   | Y    | 최대 수강생 수 |
+| startApplyMillis | timestamp | Y    | 신청 시작 시간 |
+| startLectureDate | date      | Y    | 특강 시작 날짜 |
+
+---
+
 ### 특강 신청 API
 
 - 특정 userId 로 선착순으로 제공되는 특강을 신청하는 API 를 작성합니다.
@@ -84,7 +104,7 @@ POST http://{SERVER_URL}/lecture
 - 이미 신청자가 30명이 초과되면 이후 신청자는 요청을 실패합니다.
 
 ```
-POST http://{SERVER_URL}/{lectureId}/users/{userId}
+POST http://{SERVER_URL}/lectures/{lectureId}/users/{userId}
 ```
 - **Path variable**
 
@@ -133,7 +153,7 @@ POST http://{SERVER_URL}/{lectureId}/users/{userId}
 - 특강 신청에 성공한 사용자는 성공했음을, 특강 등록자 명단에 없는 사용자는 실패했음을 반환합니다.
 
 ```
-GET http://{SERVER_URL}/{lectureId}/users/{userId}
+GET http://{SERVER_URL}/lectures/{lectureId}/users/{userId}
 ```
 - **Path variable**
 

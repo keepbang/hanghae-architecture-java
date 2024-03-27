@@ -4,6 +4,7 @@ import com.hhplus.architecture.domain.Lecture;
 import com.hhplus.architecture.dto.LectureDto;
 import com.hhplus.architecture.repository.LectureJpaRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Component;
 
@@ -35,6 +36,14 @@ public class LectureManagerImpl implements LectureManager {
   }
 
   @Override
+  public List<LectureDto> findAll() {
+    return lectureJpaRepository.findAll()
+        .stream()
+        .map(this::toDto)
+        .toList();
+  }
+
+  @Override
   public LectureDto findAndLockById(long id) {
     Optional<Lecture> oLecture = lectureJpaRepository.findAndLockById(id);
     Lecture lecture = oLecture.orElseThrow(EntityNotFoundException::new);
@@ -42,7 +51,8 @@ public class LectureManagerImpl implements LectureManager {
   }
 
   private LectureDto toDto(Lecture lecture) {
-    return new LectureDto(lecture.getId(),
+    return new LectureDto(
+        lecture.getId(),
         lecture.getName(),
         lecture.getMaxUser(),
         lecture.getStartApplyMillis(),

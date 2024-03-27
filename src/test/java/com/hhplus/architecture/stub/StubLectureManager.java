@@ -3,6 +3,8 @@ package com.hhplus.architecture.stub;
 import com.hhplus.architecture.dto.LectureDto;
 import com.hhplus.architecture.service.LectureManager;
 import java.time.LocalDateTime;
+import java.util.List;
+import org.springframework.data.domain.Pageable;
 
 /**
  * create on 3/25/24. create by IntelliJ IDEA.
@@ -34,5 +36,10 @@ public class StubLectureManager implements LectureManager {
   public LectureDto save(String name, long maxUser, long startApplyMillis,
       long startLectureMillis) {
     return lectureDto;
+  }
+
+  @Override
+  public List<LectureDto> findAll() {
+    return List.of(lectureDto);
   }
 }
