@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * create on 3/23/24. create by IntelliJ IDEA.
  *
- * <p> 강의 관련 서비스 </p>
+ * <p> 특강 관련 서비스 </p>
  *
  * @author Gibyung Chae (Keepbang)
  * @version 1.0
@@ -34,10 +34,10 @@ public class LectureService {
 
 
   /**
-   * 강의 등록.
+   * 특강 등록.
    *
-   * @param request 강의 등록 요청 정보.
-   * @return 저장된 강의.
+   * @param request 특강 등록 요청 정보.
+   * @return 저장된 특강.
    */
   @Transactional
   public LectureDto saveLecture(@NonNull CreateLectureRequest request) {
@@ -56,7 +56,7 @@ public class LectureService {
    * 사용자 특강 신청.
    *
    * @param userId    사용자 아이디.
-   * @param lectureId 강의 아이디.
+   * @param lectureId 특강 아이디.
    */
   @Transactional
   public LectureHistoryDto userApply(Long userId, Long lectureId) {
@@ -75,19 +75,19 @@ public class LectureService {
   }
 
   /**
-   * 특정 강의를 들은 학생 수 조회.
+   * 특정 특강를 들은 학생 수 조회.
    *
-   * @param lectureId 강의 아이디.
-   * @return 강의 정보.
+   * @param lectureId 특강 아이디.
+   * @return 특강 정보.
    */
   public Long countApplyUserByLectureId(Long lectureId) {
     return lectureHistoryManager.countApplyByLectureId(lectureId);
   }
 
   /**
-   * 강의신청 성공/실패 조회
+   * 특강신청 성공/실패 조회
    *
-   * @param lectureId 강의 아이디.
+   * @param lectureId 특강 아이디.
    * @param userId    사용자 아이디.
    * @return 성공/실패 여부.
    */

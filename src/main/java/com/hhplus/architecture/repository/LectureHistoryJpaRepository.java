@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * create on 2024/03/25.
  * create by IntelliJ IDEA.
  *
- * <p> 강의 기록 기능 DAO </p>
+ * <p> 특강 기록 기능 DAO </p>
  *
  * @author Gibyoung Chae (keepbang)
  * @version 1.0

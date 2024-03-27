@@ -3,6 +3,7 @@
 
 ## API List
 ### [특강 등록 API](#특강-등록-api) (`추가`)
+### [특강 목록 조회]
 ### [특강 신청 API](#특강-신청-api) (`핵심`)
 ### [특강 신청 여부 조회 API](#특강-신청-여부-조회-api)
 
@@ -13,25 +14,25 @@
 ## Create Table SQL
 ```SQL
 create table lecture (
-    id bigint auto_increment comment '강의 아이디',
-    name varchar(255) comment '강의 이름',
+    id bigint auto_increment comment '특강 아이디',
+    name varchar(255) comment '특강 이름',
     max_user bigint comment '최대 수강생 수',
-    start_apply_millis bigint comment '강의 신청 시작 시간',
-    start_lecture_millis bigint comment '강의 시작 시간',
+    start_apply_millis bigint comment '특강 신청 시작 시간',
+    start_lecture_millis bigint comment '특강 시작 시간',
     primary key (id)
 );
 
-ALTER TABLE lecture COMMENT '강의 메타정보 테이블';
+ALTER TABLE lecture COMMENT '특강 메타정보 테이블';
 
 create table lecture_history (
-    id bigint auto_increment comment '강의 신청 이력 아이디',
-    lecture_id bigint comment '강의 아이디',
+    id bigint auto_increment comment '특강 신청 이력 아이디',
+    lecture_id bigint comment '특강 아이디',
     user_id bigint comment '사용자 아이디',
     apply_millis bigint comment '신청 시간',
     primary key (id)
 );
 
-ALTER TABLE lecture_history COMMENT '강의 신청 이력 테이블';
+ALTER TABLE lecture_history COMMENT '특강 신청 이력 테이블';
 
 ```
 
@@ -42,8 +43,8 @@ ALTER TABLE lecture_history COMMENT '강의 신청 이력 테이블';
 
 ### 특강 등록 API
 
-- 강의 정보를 저장합니다.
-- 강의 이름은 중복될 수 없습니다.
+- 특강 정보를 저장합니다.
+- 특강 이름은 중복될 수 없습니다.
 
 ```
 POST http://{SERVER_URL}/lecture
@@ -52,20 +53,20 @@ POST http://{SERVER_URL}/lecture
 
 | 파라미터             | 타입        | 필수여부 | 설명       | 중복 여부 |
 |------------------|-----------|------|----------|-------|
-| name             | string    | Y    | 강의 이름    | 중복 불가 |
+| name             | string    | Y    | 특강 이름    | 중복 불가 |
 | maxUser          | integer   | Y    | 최대 수강생 수 |       |
 | startApplyMillis | timestamp | Y    | 신청 시작 시간 |       |
-| startLectureDate | date      | Y    | 강의 시작 날짜 |       |
+| startLectureDate | date      | Y    | 특강 시작 날짜 |       |
 
 - **Response body**
 
 | 파라미터             | 타입        | 필수여부 | 설명       |
 |------------------|-----------|------|----------|
-| id               | integer   | Y    | 강의 아이디   |
-| name             | string    | Y    | 강의 이름    |
+| id               | integer   | Y    | 특강 아이디   |
+| name             | string    | Y    | 특강 이름    |
 | maxUser          | integer   | Y    | 최대 수강생 수 |
 | startApplyMillis | timestamp | Y    | 신청 시작 시간 |
-| startLectureDate | date      | Y    | 강의 시작 날짜 |
+| startLectureDate | date      | Y    | 특강 시작 날짜 |
 
 
 - 실패 케이스
@@ -89,7 +90,7 @@ POST http://{SERVER_URL}/{lectureId}/users/{userId}
 
 | 파라미터                 | 타입      | 필수여부 | 설명      |
 |----------------------|---------|------|---------|
-| lectureId            | integer | Y    | 강의 아이디  |
+| lectureId            | integer | Y    | 특강 아이디  |
 | userId               | integer | Y    | 사용자 아이디 |
 
 - **Response body**
@@ -97,23 +98,23 @@ POST http://{SERVER_URL}/{lectureId}/users/{userId}
 | 파라미터        | 타입        | 필수여부 | 설명      |
 |-------------|-----------|------|---------|
 | userId      | string    | Y    | 사용자 아이디 |
-| lectureId   | integer   | Y    | 강의 아이디  |
+| lectureId   | integer   | Y    | 특강 아이디  |
 | applyMillis | timestamp | Y    | 신청 시간   |
 
 
 - **프로세스**
   - `validate` 특강 인원제한에 걸렸는지 확인 
-    - history 및 강의 조회
+    - history 및 특강 조회
   - `validate` 이미 신청한 내역이 존재하는지 확인
     - 방안 1) DB 유니크 제약조건 설정 -> 테스트 하기 아려움
     - 방안 2) history 테이블 확인
-  - 강의 신청 기록에 저장
+  - 특강 신청 기록에 저장
 
 
 - **실패 케이스**
   - 신청자가 N명이 초과 될 경우
   - 이미 신청했을 경우
-  - 선택한 강의가 없을 경우
+  - 선택한 특강가 없을 경우
 
 
 - 동시성 처리
@@ -138,7 +139,7 @@ GET http://{SERVER_URL}/{lectureId}/users/{userId}
 
 | 파라미터                 | 타입      | 필수여부 | 설명      |
 |----------------------|---------|------|---------|
-| lectureId            | integer | Y    | 강의 아이디  |
+| lectureId            | integer | Y    | 특강 아이디  |
 
 - **Response body**
 ```

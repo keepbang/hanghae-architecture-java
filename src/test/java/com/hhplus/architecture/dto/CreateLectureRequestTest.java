@@ -36,7 +36,7 @@ class CreateLectureRequestTest {
 
   @ParameterizedTest
   @MethodSource("invalidRequest")
-  @DisplayName("강의 등록 시 request 검증")
+  @DisplayName("특강 등록 시 request 검증")
   void validRequest_exceptionTest(CreateLectureRequest request) {
     // given
     // when

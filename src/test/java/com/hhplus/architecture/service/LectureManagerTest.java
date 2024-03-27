@@ -32,7 +32,7 @@ class LectureManagerTest {
   private LectureManagerImpl lectureManager;
 
   /**
-   * 강의를 못찾을 경우 exception 발생.
+   * 특강를 못찾을 경우 exception 발생.
    */
   @Test
   void findById_notFoundException() {

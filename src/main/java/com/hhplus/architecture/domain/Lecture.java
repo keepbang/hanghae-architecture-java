@@ -24,7 +24,7 @@ public class Lecture {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  // 강의 이름.
+  // 특강 이름.
   @Column(name = "name")
   private String name;
 
@@ -36,7 +36,7 @@ public class Lecture {
   @Column(name = "start_apply_millis")
   private Long startApplyMillis;
 
-  // 강의 시작 시간.
+  // 특강 시작 시간.
   @Column(name = "start_lecture_millis")
   private Long startLectureMillis;
 

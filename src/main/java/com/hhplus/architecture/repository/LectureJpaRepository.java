@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.Lock;
  * create on 2024/03/25.
  * create by IntelliJ IDEA.
  *
- * <p> 강의 관련 DAO </p>
+ * <p> 특강 관련 DAO </p>
  *
  * @author Gibyoung Chae (keepbang)
  * @version 1.0

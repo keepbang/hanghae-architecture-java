@@ -5,7 +5,7 @@ import com.hhplus.architecture.dto.LectureDto;
 /**
  * create on 3/25/24. create by IntelliJ IDEA.
  *
- * <p> 강의 관련 Interface </p>
+ * <p> 특강 관련 Interface </p>
  *
  * @author Gibyung Chae (Keepbang)
  * @version 1.0
@@ -14,17 +14,17 @@ import com.hhplus.architecture.dto.LectureDto;
 public interface LectureManager {
 
   /**
-   * 강의 조회.
+   * 특강 조회.
    *
-   * @param id 강의 아이디.
-   * @return 강의.
+   * @param id 특강 아이디.
+   * @return 특강.
    */
   LectureDto findAndLockById(long id);
 
   /**
-   * 강의 등록
+   * 특강 등록
    *
-   * @param name               강의 이름.
+   * @param name               특강 이름.
    * @param maxUser            최대 수강생 수.
    * @param startApplyMillis   특강 신청 시작 시간.
    * @param startLectureMillis 특강 시작 시간.

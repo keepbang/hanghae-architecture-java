@@ -18,7 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 /**
  * create on 3/25/24. create by IntelliJ IDEA.
  *
- * <p> 강의 신청 동시성 테스트 </p>
+ * <p> 특강 신청 동시성 테스트 </p>
  *
  * @author Gibyung Chae (Keepbang)
  * @version 1.0
@@ -32,14 +32,14 @@ public class LectureIntegrationTest {
 
 
   @Test
-  @DisplayName("30명 정원인 강의 3개에 120이 신청할려고할 경우")
+  @DisplayName("30명 정원인 특강 3개에 120이 신청할려고할 경우")
   void applyLecture_Concurrent_특강여러개() throws InterruptedException {
     // given
     int numberOfThreads = 120;
     ExecutorService executorService = Executors.newFixedThreadPool(10);
     CountDownLatch latch = new CountDownLatch(numberOfThreads);
 
-    // 강의 등록
+    // 특강 등록
     saveLecture("목요일 특강");
     saveLecture("토요일 특강");
     saveLecture("금요일 특강");
@@ -47,13 +47,13 @@ public class LectureIntegrationTest {
     // 실패한 사용자를 담기위한 큐
     ConcurrentLinkedQueue<Long> queue = new ConcurrentLinkedQueue<>();
 
-    // when - 강의 신청
+    // when - 특강 신청
     for (int i = 0; i < numberOfThreads; i++) {
       int finalI = i;
       executorService.execute(() -> {
         try {
-          long lectureId = (finalI % 3) + 1L; // 강의 아이디.
-          lectureService.userApply(finalI + 1L, lectureId); // 강의 신청
+          long lectureId = (finalI % 3) + 1L; // 특강 아이디.
+          lectureService.userApply(finalI + 1L, lectureId); // 특강 신청
         } catch (Exception e) {
           queue.add(finalI + 1L);
         }
@@ -66,7 +66,7 @@ public class LectureIntegrationTest {
     Long count2 = lectureService.countApplyUserByLectureId(2L);
     Long count3 = lectureService.countApplyUserByLectureId(3L);
 
-    // 3강의에 신청 수강생 수는 30이여야 한다.
+    // 3특강에 신청 수강생 수는 30이여야 한다.
     assertThat(count1).isEqualTo(30L);
     assertThat(count2).isEqualTo(30L);
     assertThat(count3).isEqualTo(30L);

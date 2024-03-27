@@ -69,9 +69,9 @@ class LectureServiceTest {
         .hasMessage("이미 신청했습니다.");
   }
 
-  // 강의 신청 성공.
+  // 특강 신청 성공.
   @Test
-  @DisplayName("강의 신청 성공")
+  @DisplayName("특강 신청 성공")
   void lectureApply_ok() {
     // given
     Long userId = 1L;
