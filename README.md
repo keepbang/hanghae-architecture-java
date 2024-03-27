@@ -86,13 +86,13 @@ GET http://{SERVER_URL}/lectures
 
 - **Response body**
 
-| 파라미터             | 타입        | 필수여부 | 설명       |
-|------------------|-----------|------|----------|
-| id               | integer   | Y    | 특강 아이디   |
-| name             | string    | Y    | 특강 이름    |
-| maxUser          | integer   | Y    | 최대 수강생 수 |
-| startApplyMillis | timestamp | Y    | 신청 시작 시간 |
-| startLectureDate | date      | Y    | 특강 시작 날짜 |
+| 파라미터                | 타입        | 필수여부 | 설명       |
+|---------------------|-----------|------|----------|
+| [].id               | integer   | Y    | 특강 아이디   |
+| [].name             | string    | Y    | 특강 이름    |
+| [].maxUser          | integer   | Y    | 최대 수강생 수 |
+| [].startApplyMillis | timestamp | Y    | 신청 시작 시간 |
+| [].startLectureDate | date      | Y    | 특강 시작 날짜 |
 
 ---
 
