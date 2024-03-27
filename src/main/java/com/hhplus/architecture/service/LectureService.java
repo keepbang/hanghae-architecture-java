@@ -60,7 +60,7 @@ public class LectureService {
    */
   @Transactional
   public LectureHistoryDto userApply(Long userId, Long lectureId) {
-    LectureDto lectureDto = lectureManager.findById(lectureId);
+    LectureDto lectureDto = lectureManager.findAndLockById(lectureId);
 
     lectorValidator.validUserCount(
         lectureHistoryManager.countApplyByLectureId(lectureId),

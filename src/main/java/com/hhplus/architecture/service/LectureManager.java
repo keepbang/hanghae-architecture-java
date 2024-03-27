@@ -19,7 +19,7 @@ public interface LectureManager {
    * @param id 강의 아이디.
    * @return 강의.
    */
-  LectureDto findById(long id);
+  LectureDto findAndLockById(long id);
 
   /**
    * 강의 등록

@@ -35,8 +35,8 @@ public class LectureManagerImpl implements LectureManager {
   }
 
   @Override
-  public LectureDto findById(long id) {
-    Optional<Lecture> oLecture = lectureJpaRepository.findById(id);
+  public LectureDto findAndLockById(long id) {
+    Optional<Lecture> oLecture = lectureJpaRepository.findAndLockById(id);
     Lecture lecture = oLecture.orElseThrow(EntityNotFoundException::new);
     return toDto(lecture);
   }

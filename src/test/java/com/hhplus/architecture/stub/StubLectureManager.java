@@ -26,7 +26,7 @@ public class StubLectureManager implements LectureManager {
   );
 
   @Override
-  public LectureDto findById(long id) {
+  public LectureDto findAndLockById(long id) {
     return lectureDto;
   }
 

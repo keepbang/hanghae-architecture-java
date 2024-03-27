@@ -20,6 +20,6 @@ public interface LectureJpaRepository extends JpaRepository<Lecture, Long> {
 
   // 비관적 락 적용
   @Lock(LockModeType.PESSIMISTIC_WRITE)
-  Optional<Lecture> findById(Long id);
+  Optional<Lecture> findAndLockById(Long id);
 
 }
