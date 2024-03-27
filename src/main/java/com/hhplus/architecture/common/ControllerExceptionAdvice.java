@@ -26,21 +26,21 @@ public class ControllerExceptionAdvice extends ResponseEntityExceptionHandler {
   public ResponseEntity<ErrorResponse> handleLectureApplyException(Exception e) {
     log.error("error: ", e);
     ErrorResponse errorResponse = new ErrorResponse("400", e.getMessage());
-    return ResponseEntity.internalServerError().body(errorResponse);
+    return ResponseEntity.badRequest().body(errorResponse);
   }
 
   @ExceptionHandler(InvalidRequestException.class)
   public ResponseEntity<ErrorResponse> handleInvalidRequestException(Exception e) {
     log.error("error: ", e);
     ErrorResponse errorResponse = new ErrorResponse("400", e.getMessage());
-    return ResponseEntity.internalServerError().body(errorResponse);
+    return ResponseEntity.badRequest().body(errorResponse);
   }
 
   @ExceptionHandler(DataNotFoundException.class)
   public ResponseEntity<ErrorResponse> handleDataNotFoundException(Exception e) {
     log.error("error: ", e);
     ErrorResponse errorResponse = new ErrorResponse("400", e.getMessage());
-    return ResponseEntity.internalServerError().body(errorResponse);
+    return ResponseEntity.badRequest().body(errorResponse);
   }
 
 }
