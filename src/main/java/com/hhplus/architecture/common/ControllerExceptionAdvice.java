@@ -1,6 +1,7 @@
 package com.hhplus.architecture.common;
 
 
+import com.hhplus.architecture.common.exception.InvalidRequestException;
 import com.hhplus.architecture.common.exception.LectureApplyException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -21,11 +22,17 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestControllerAdvice
 public class ControllerExceptionAdvice extends ResponseEntityExceptionHandler {
   @ExceptionHandler(LectureApplyException.class)
-  public ResponseEntity<ErrorResponse> handleException(Exception e) {
+  public ResponseEntity<ErrorResponse> handleLectureApplyException(Exception e) {
     log.error("error: ", e);
     ErrorResponse errorResponse = new ErrorResponse("400", e.getMessage());
     return ResponseEntity.internalServerError().body(errorResponse);
   }
 
+  @ExceptionHandler(InvalidRequestException.class)
+  public ResponseEntity<ErrorResponse> handleInvalidRequestException(Exception e) {
+    log.error("error: ", e);
+    ErrorResponse errorResponse = new ErrorResponse("400", e.getMessage());
+    return ResponseEntity.internalServerError().body(errorResponse);
+  }
 
 }

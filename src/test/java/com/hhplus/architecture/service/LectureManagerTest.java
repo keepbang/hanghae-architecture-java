@@ -4,14 +4,16 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
-import com.hhplus.architecture.repository.LectureRepository;
+import com.hhplus.architecture.repository.LectureJpaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 /**
  * create on 3/25/24. create by IntelliJ IDEA.
@@ -22,19 +24,14 @@ import org.mockito.MockitoAnnotations;
  * @version 1.0
  * @since 1.0
  */
+@ExtendWith(MockitoExtension.class)
 class LectureManagerTest {
 
   @Mock
-  private LectureRepository lectureRepository;
+  private LectureJpaRepository lectureJpaRepository;
 
   @InjectMocks
-  private LectureManager lectureManager;
-
-  @BeforeEach
-  public void setUp() {
-    MockitoAnnotations.openMocks(this);
-    this.lectureManager = new LectureManagerImpl(lectureRepository);
-  }
+  private LectureManagerImpl lectureManager;
 
   /**
    * 강의를 못찾을 경우 exception 발생.
@@ -43,7 +40,7 @@ class LectureManagerTest {
   void findById_notFoundException() {
     // given
     // when
-    when(lectureRepository.findById(anyLong()))
+    when(lectureJpaRepository.findById(anyLong()))
         .thenReturn(Optional.empty());
 
     // then

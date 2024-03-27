@@ -2,9 +2,8 @@ package com.hhplus.architecture.service;
 
 import com.hhplus.architecture.domain.LectureHistory;
 import com.hhplus.architecture.dto.LectureHistoryDto;
-import com.hhplus.architecture.repository.LectureHistoryRepository;
+import com.hhplus.architecture.repository.LectureHistoryJpaRepository;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * create on 2024/03/25. create by IntelliJ IDEA.
@@ -18,20 +17,20 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class LectureHistoryManagerImpl implements LectureHistoryManager {
 
-  private final LectureHistoryRepository lectureHistoryRepository;
+  private final LectureHistoryJpaRepository lectureHistoryJpaRepository;
 
-  public LectureHistoryManagerImpl(final LectureHistoryRepository lectureHistoryRepository) {
-    this.lectureHistoryRepository = lectureHistoryRepository;
+  public LectureHistoryManagerImpl(final LectureHistoryJpaRepository lectureHistoryJpaRepository) {
+    this.lectureHistoryJpaRepository = lectureHistoryJpaRepository;
   }
 
   @Override
   public long countApplyByLectureId(long lectureId) {
-    return lectureHistoryRepository.countAllByLectureId(lectureId);
+    return lectureHistoryJpaRepository.countAllByLectureId(lectureId);
   }
 
   @Override
   public boolean isAlreadyApplyByUserIdAndLectureId(long userId, long lectureId) {
-    return lectureHistoryRepository.existsByUserIdAndLectureId(userId, lectureId);
+    return lectureHistoryJpaRepository.existsByUserIdAndLectureId(userId, lectureId);
   }
 
   @Override
@@ -39,7 +38,7 @@ public class LectureHistoryManagerImpl implements LectureHistoryManager {
     LectureHistory lectureHistory = new LectureHistory(userId, lectureId,
         System.currentTimeMillis());
 
-    LectureHistory savedHistory = lectureHistoryRepository.save(lectureHistory);
+    LectureHistory savedHistory = lectureHistoryJpaRepository.save(lectureHistory);
     return new LectureHistoryDto(
         savedHistory.getUserId(),
         savedHistory.getLectureId(),

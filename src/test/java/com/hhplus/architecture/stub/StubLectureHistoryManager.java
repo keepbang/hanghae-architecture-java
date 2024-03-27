@@ -32,6 +32,12 @@ public class StubLectureHistoryManager implements LectureHistoryManager {
     return dto;
   }
 
+  public void initList(int count) {
+    for (int i = 1; i <= count; i++) {
+      this.save(i, 1L);
+    }
+  }
+
   @Override
   public long countApplyByLectureId(long lectureId) {
     return lectureHistories.stream()
@@ -44,11 +50,5 @@ public class StubLectureHistoryManager implements LectureHistoryManager {
     return lectureHistories.stream()
         .anyMatch(dto -> Objects.equals(dto.userId(), userId)
             && Objects.equals(dto.lectureId(), lectureId));
-  }
-
-  public void initList(int count) {
-    for (int i = 1; i <= count; i++) {
-      this.save(i, 1L);
-    }
   }
 }

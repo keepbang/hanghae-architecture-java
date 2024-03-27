@@ -10,6 +10,32 @@
 ## ERD
 ![img.png](images/img.png)
 
+## Create Table SQL
+```SQL
+create table lecture (
+    id bigint auto_increment comment '강의 아이디',
+    name varchar(255) comment '강의 이름',
+    max_user bigint comment '최대 수강생 수',
+    start_apply_millis bigint comment '강의 신청 시작 시간',
+    start_lecture_millis bigint comment '강의 시작 시간',
+    primary key (id)
+);
+
+ALTER TABLE lecture COMMENT '강의 메타정보 테이블';
+
+create table lecture_history (
+    id bigint auto_increment comment '강의 신청 이력 아이디',
+    lecture_id bigint comment '강의 아이디',
+    user_id bigint comment '사용자 아이디',
+    apply_millis bigint comment '신청 시간',
+    primary key (id)
+);
+
+ALTER TABLE lecture_history COMMENT '강의 신청 이력 테이블';
+
+```
+
+
 ---
 
 ## 요구사항 분석
@@ -18,7 +44,6 @@
 
 - 강의 정보를 저장합니다.
 - 강의 이름은 중복될 수 없습니다.
-- 신청 시작 시간과 강의 시작는 최소 하루 후로 설정할 수 있습니다.
 
 ```
 POST http://{SERVER_URL}/lecture
@@ -44,8 +69,8 @@ POST http://{SERVER_URL}/lecture
 
 
 - 실패 케이스
-  - `request` 필수값이 `null`일 경우
-  - `timestamp`나 날짜 형식이 맞지 않거나 오늘인 경우
+  - `request` 필수값이 `null`이거나 0일 경우
+  - `timestamp`나 날짜 형식이 맞지 않거나 과거 시간인 경우
   - 최대 수강생 수가 0이하인 경우
 
 ---

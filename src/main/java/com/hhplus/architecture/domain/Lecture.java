@@ -32,11 +32,11 @@ public class Lecture {
   @Column(name = "max_user")
   private Long maxUser;
 
-  // 신청 시작 일시.
+  // 신청 시작 시간.
   @Column(name = "start_apply_millis")
   private Long startApplyMillis;
 
-  // 강의 시작 일시.
+  // 강의 시작 시간.
   @Column(name = "start_lecture_millis")
   private Long startLectureMillis;
 

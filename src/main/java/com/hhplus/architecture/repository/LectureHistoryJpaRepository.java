@@ -13,7 +13,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @version 1.0
  * @since 1.0
  */
-public interface LectureHistoryRepository extends JpaRepository<LectureHistory, Long> {
+public interface LectureHistoryJpaRepository extends JpaRepository<LectureHistory, Long> {
 
   long countAllByLectureId(long lectureId);
 

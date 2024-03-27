@@ -16,7 +16,7 @@ import org.springframework.data.jpa.repository.Lock;
  * @version 1.0
  * @since 1.0
  */
-public interface LectureRepository extends JpaRepository<Lecture, Long> {
+public interface LectureJpaRepository extends JpaRepository<Lecture, Long> {
 
   // 비관적 락 적용
   @Lock(LockModeType.PESSIMISTIC_WRITE)

@@ -35,12 +35,7 @@ public class LectureController {
   @PostMapping
   public ResponseEntity<LectureDto> saveLecture(@RequestBody CreateLectureRequest request) {
     return new ResponseEntity<>(
-        lectureService.saveLecture(
-            request.name(),
-            request.maxUser(),
-            request.startApplyMillis(),
-            request.startLectureMillis()
-        )
+        lectureService.saveLecture(request)
         , HttpStatus.CREATED
     );
   }

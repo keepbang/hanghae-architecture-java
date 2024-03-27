@@ -1,6 +1,6 @@
 package com.hhplus.architecture.dto;
 
-import com.hhplus.architecture.common.exception.CreateLectureException;
+import com.hhplus.architecture.common.exception.InvalidRequestException;
 import io.micrometer.common.util.StringUtils;
 
 /**
@@ -19,9 +19,13 @@ public record CreateLectureRequest(
     long startLectureMillis
 ) {
 
-  public void validRequest() {
-    if (StringUtils.isEmpty(this.name) || maxUser <= 0) {
-      throw new CreateLectureException("잘못된 입력입니다.");
+  public void validationRequest() {
+    // 현재 시간
+    long currentMillis = System.currentTimeMillis();
+
+    if (StringUtils.isEmpty(this.name) || this.maxUser <= 0 ||
+        this.startApplyMillis < currentMillis || this.startLectureMillis < currentMillis) {
+      throw new InvalidRequestException("잘못된 요청입니다.");
     }
 
   }

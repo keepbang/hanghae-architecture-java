@@ -2,7 +2,10 @@ package com.hhplus.architecture.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.hhplus.architecture.dto.CreateLectureRequest;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -75,14 +78,18 @@ public class LectureIntegrationTest {
 
   private void saveLecture(String name) {
     lectureService.saveLecture(
-        name,
-        30L,
-        LocalDateTime.now()
-            .plusDays(1L)
-            .getNano(),
-        LocalDateTime.now()
-            .plusDays(3L)
-            .getNano()
+        new CreateLectureRequest(
+            name,
+            30L,
+            LocalDateTime.now()
+                .plusDays(1L)
+                .toInstant(ZoneOffset.UTC)
+                .toEpochMilli(),
+            LocalDateTime.now()
+                .plusDays(3L)
+                .toInstant(ZoneOffset.UTC)
+                .toEpochMilli()
+        )
     );
   }
 
