@@ -1,6 +1,7 @@
 package com.hhplus.architecture.common;
 
 
+import com.hhplus.architecture.common.exception.DataNotFoundException;
 import com.hhplus.architecture.common.exception.InvalidRequestException;
 import com.hhplus.architecture.common.exception.LectureApplyException;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,13 @@ public class ControllerExceptionAdvice extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler(InvalidRequestException.class)
   public ResponseEntity<ErrorResponse> handleInvalidRequestException(Exception e) {
+    log.error("error: ", e);
+    ErrorResponse errorResponse = new ErrorResponse("400", e.getMessage());
+    return ResponseEntity.internalServerError().body(errorResponse);
+  }
+
+  @ExceptionHandler(DataNotFoundException.class)
+  public ResponseEntity<ErrorResponse> handleDataNotFoundException(Exception e) {
     log.error("error: ", e);
     ErrorResponse errorResponse = new ErrorResponse("400", e.getMessage());
     return ResponseEntity.internalServerError().body(errorResponse);

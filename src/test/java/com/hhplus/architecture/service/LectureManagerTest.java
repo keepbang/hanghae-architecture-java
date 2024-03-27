@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
+import com.hhplus.architecture.common.exception.DataNotFoundException;
 import com.hhplus.architecture.repository.LectureJpaRepository;
-import jakarta.persistence.EntityNotFoundException;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,7 +43,8 @@ class LectureManagerTest {
 
     // then
     assertThatThrownBy(() -> lectureManager.findAndLockById(1L))
-        .isInstanceOf(EntityNotFoundException.class);
+        .isInstanceOf(DataNotFoundException.class)
+        .hasMessage("강의가 등록되지 않았습니다.");
   }
 
 }

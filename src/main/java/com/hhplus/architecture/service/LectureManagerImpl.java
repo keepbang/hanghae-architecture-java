@@ -1,9 +1,9 @@
 package com.hhplus.architecture.service;
 
+import com.hhplus.architecture.common.exception.DataNotFoundException;
 import com.hhplus.architecture.domain.Lecture;
 import com.hhplus.architecture.dto.LectureDto;
 import com.hhplus.architecture.repository.LectureJpaRepository;
-import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Component;
@@ -46,7 +46,7 @@ public class LectureManagerImpl implements LectureManager {
   @Override
   public LectureDto findAndLockById(long id) {
     Optional<Lecture> oLecture = lectureJpaRepository.findAndLockById(id);
-    Lecture lecture = oLecture.orElseThrow(EntityNotFoundException::new);
+    Lecture lecture = oLecture.orElseThrow(() -> new DataNotFoundException("강의가 등록되지 않았습니다."));
     return toDto(lecture);
   }
 

@@ -50,14 +50,14 @@ public class LectureController {
   }
 
   @PostMapping("/{lectureId}/users/{userId}")
-  public ResponseEntity<LectureHistoryDto> apply(@PathVariable Long lectureId,
-      @PathVariable Long userId) {
+  public ResponseEntity<LectureHistoryDto> apply(@PathVariable("lectureId") long lectureId,
+      @PathVariable("userId") long userId) {
     return ResponseEntity.ok(lectureService.userApply(userId, lectureId));
   }
 
   @GetMapping("/{lectureId}/users/{userId}")
-  public ResponseEntity<Boolean> isApplyBy(@PathVariable Long lectureId,
-      @PathVariable Long userId) {
+  public ResponseEntity<Boolean> isApplyBy(@PathVariable("lectureId") long lectureId,
+      @PathVariable("userId") long userId) {
     return ResponseEntity.ok(lectureService.isApplyByLectureIdAndUserId(lectureId, userId));
   }
 }
