@@ -47,7 +47,7 @@ class LectureServiceTest {
   @DisplayName("신청자 수가 초과되면 실패한다.")
   void lectureApply_overMaxApplyCount_fileTest(int userCount) {
     // given
-    lectureHistoryManager.initList(userCount); // 사용자 추가
+    lectureManager.initApply(userCount); // 신청 count 추가
     // when
     // then
     assertThatThrownBy(() -> lectureService.userApply(1L, 1L))

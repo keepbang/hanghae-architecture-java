@@ -5,6 +5,7 @@ import com.hhplus.architecture.common.exception.DataNotFoundException;
 import com.hhplus.architecture.common.exception.InvalidRequestException;
 import com.hhplus.architecture.common.exception.LectureApplyException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -40,6 +41,13 @@ public class ControllerExceptionAdvice extends ResponseEntityExceptionHandler {
   public ResponseEntity<ErrorResponse> handleDataNotFoundException(Exception e) {
     log.error("error: ", e);
     ErrorResponse errorResponse = new ErrorResponse("400", e.getMessage());
+    return ResponseEntity.badRequest().body(errorResponse);
+  }
+
+  @ExceptionHandler(DataIntegrityViolationException.class)
+  public ResponseEntity<ErrorResponse> handleViolationException(Exception e) {
+    log.error("error: ", e);
+    ErrorResponse errorResponse = new ErrorResponse("400", "이미 신청했습니다.");
     return ResponseEntity.badRequest().body(errorResponse);
   }
 

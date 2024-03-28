@@ -5,6 +5,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 
 /**
@@ -17,6 +20,12 @@ import lombok.Getter;
  * @since 1.0
  */
 @Entity
+@Table(uniqueConstraints = {
+    @UniqueConstraint(
+        name = "lecture_history_uk",
+        columnNames = {"user_id", "lecture_id"}
+    )
+})
 @Getter
 public class LectureHistory {
 

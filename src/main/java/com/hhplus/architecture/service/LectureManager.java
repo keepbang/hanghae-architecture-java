@@ -1,5 +1,6 @@
 package com.hhplus.architecture.service;
 
+import com.hhplus.architecture.dto.ApplyCounterDto;
 import com.hhplus.architecture.dto.LectureDto;
 import java.util.List;
 
@@ -15,14 +16,6 @@ import java.util.List;
 public interface LectureManager {
 
   /**
-   * 특강 조회.
-   *
-   * @param id 특강 아이디.
-   * @return 특강.
-   */
-  LectureDto findAndLockById(long id);
-
-  /**
    * 특강 등록
    *
    * @param name               특강 이름.
@@ -36,8 +29,23 @@ public interface LectureManager {
   /**
    * 등록된 특강 목록 조회.
    *
-   * @return  특강 목록.
+   * @return 특강 목록.
    */
   List<LectureDto> findAll();
+
+  /**
+   * 특강에 신청한 수강생 수 조회.
+   *
+   * @param lectureId 특강 아이디.
+   * @return 신청 카운트 dto.
+   */
+  ApplyCounterDto findCountAndLockByLectureId(long lectureId);
+
+  /**
+   * 특강 신청 후 상의 수강생 count 증가.
+   * @param lectureId 강의 아이디.
+   * @param applyCounter count 값이 증가된 값
+   */
+  void saveApplyCount(Long lectureId, ApplyCounterDto applyCounter);
 
 }

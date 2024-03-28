@@ -25,14 +25,22 @@ create table lecture (
 ALTER TABLE lecture COMMENT '특강 메타정보 테이블';
 
 create table lecture_history (
-    id bigint auto_increment comment '특강 신청 이력 아이디',
     lecture_id bigint comment '특강 아이디',
     user_id bigint comment '사용자 아이디',
     apply_millis bigint comment '신청 시간',
-    primary key (id)
+    primary key (lecture_id, user_id)
 );
 
 ALTER TABLE lecture_history COMMENT '특강 신청 이력 테이블';
+
+create table apply_counter (
+    lecture_id bigint not null comment '특강 아이디',
+    apply_count bigint comment '특강 신청 수강생 수',
+    max_user bigint comment '최대 수강생 수',
+    primary key (lecture_id)
+);
+
+ALTER TABLE apply_counter COMMENT '특강 신청 카운트 테이블';
 
 ```
 
@@ -44,7 +52,7 @@ ALTER TABLE lecture_history COMMENT '특강 신청 이력 테이블';
 ### 특강 등록 API
 
 - 특강 정보를 저장합니다.
-- 특강 이름은 중복될 수 없습니다.
+- 특강 저보를 저장할때 특강 신청 카운트 테이블도 같이 저장합니다.
 
 ```
 POST http://{SERVER_URL}/lectures
@@ -124,10 +132,12 @@ POST http://{SERVER_URL}/lectures/{lectureId}/users/{userId}
 
 - **프로세스**
   - `validate` 특강 인원제한에 걸렸는지 확인 
-    - history 및 특강 조회
+    - ~~history 및 특강 조회~~
+    - 특강 신청 카운트 테이블 조회(lock 걸림)
   - `validate` 이미 신청한 내역이 존재하는지 확인
-    - 방안 1) DB 유니크 제약조건 설정 -> 테스트 하기 아려움
+    - 방안 1) DB 유니크 제약조건 설정
     - 방안 2) history 테이블 확인
+      - 두가지 방법 모두 사용
   - 특강 신청 기록에 저장
 
 
@@ -141,9 +151,17 @@ POST http://{SERVER_URL}/lectures/{lectureId}/users/{userId}
   - 동시에 여러명에 사용자가 신청을 할경우에도 설정한 인원만큼만 신청 가능해야 한다.
   - 비관적 락을 사용하여 행에 일기와 쓰기에 락 적용 
     ```java
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    Optional<Lecture> findById(Long id);
+    public interface ApplyCounterJpaRepository extends JpaRepository<ApplyCounter, Long> {
+      // 비관적 락 적용
+      @Lock(LockModeType.PESSIMISTIC_WRITE)
+      Optional<ApplyCounter> findAndLockByLectureId(Long id);
+
+    }
     ```
+    
+- 동시성 테스트
+  - 3개의 특강에(최대 30명) 120명이 신청할 경우 30명은 실패해야합니다.
+  - 사용자 5명이 5번씩 동시에 요청을 보내도 저장되는건 5명이여야 합니다.
 
 ---
 

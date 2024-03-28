@@ -39,13 +39,6 @@ public class StubLectureHistoryManager implements LectureHistoryManager {
   }
 
   @Override
-  public long countApplyByLectureId(long lectureId) {
-    return lectureHistories.stream()
-        .filter(dto -> Objects.equals(dto.lectureId(), lectureId))
-        .count();
-  }
-
-  @Override
   public boolean isAlreadyApplyByUserIdAndLectureId(long userId, long lectureId) {
     return lectureHistories.stream()
         .anyMatch(dto -> Objects.equals(dto.userId(), userId)

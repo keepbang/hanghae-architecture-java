@@ -21,21 +21,6 @@ class LectureValidatorTest {
 
   LectureValidator lectureValidator = new LectureValidator();
 
-  // 신청자가 초과되면 exception 발생
-  @ParameterizedTest
-  @ValueSource(ints = {
-      30, 31
-  })
-  @DisplayName("신청자 수가 초과되면 실패한다.")
-  void validUserCount_overMaxApplyCount_fileTest(int userCount) {
-    // given
-    // when
-    // then
-    assertThatThrownBy(() -> lectureValidator.validUserCount(userCount, 30L))
-        .isInstanceOf(LectureApplyException.class)
-        .hasMessage("최대 신청수를 초과했습니다.");
-  }
-
   // 이미 신청했을 경우 exception 발생
   @Test
   @DisplayName("이미 신청한 내역이 존재하면 실패한다.")

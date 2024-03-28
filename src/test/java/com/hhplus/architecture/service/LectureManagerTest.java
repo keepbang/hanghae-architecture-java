@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 import com.hhplus.architecture.common.exception.DataNotFoundException;
+import com.hhplus.architecture.repository.ApplyCounterJpaRepository;
 import com.hhplus.architecture.repository.LectureJpaRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,9 @@ class LectureManagerTest {
   @Mock
   private LectureJpaRepository lectureJpaRepository;
 
+  @Mock
+  private ApplyCounterJpaRepository applyCounterJpaRepository;
+
   @InjectMocks
   private LectureManagerImpl lectureManager;
 
@@ -38,11 +42,11 @@ class LectureManagerTest {
   void findById_notFoundException() {
     // given
     // when
-    when(lectureJpaRepository.findAndLockById(anyLong()))
+    when(applyCounterJpaRepository.findAndLockByLectureId(anyLong()))
         .thenReturn(Optional.empty());
 
     // then
-    assertThatThrownBy(() -> lectureManager.findAndLockById(1L))
+    assertThatThrownBy(() -> lectureManager.findCountAndLockByLectureId(1L))
         .isInstanceOf(DataNotFoundException.class)
         .hasMessage("강의가 등록되지 않았습니다.");
   }

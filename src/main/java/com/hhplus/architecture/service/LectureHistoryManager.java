@@ -22,14 +22,6 @@ public interface LectureHistoryManager {
   LectureHistoryDto save(long userId, long lectureId);
 
   /**
-   * 특정 특강 신청 수 조회.
-   *
-   * @param lectureId 특강 아이디.
-   * @return 신청한 사용자 수.
-   */
-  long countApplyByLectureId(long lectureId);
-
-  /**
    * 이미 특강를 신청했는지 조회.
    *
    * @param userId    사용자 아이디.

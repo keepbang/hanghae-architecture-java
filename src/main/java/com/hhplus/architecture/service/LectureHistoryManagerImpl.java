@@ -24,11 +24,6 @@ public class LectureHistoryManagerImpl implements LectureHistoryManager {
   }
 
   @Override
-  public long countApplyByLectureId(long lectureId) {
-    return lectureHistoryJpaRepository.countAllByLectureId(lectureId);
-  }
-
-  @Override
   public boolean isAlreadyApplyByUserIdAndLectureId(long userId, long lectureId) {
     return lectureHistoryJpaRepository.existsByUserIdAndLectureId(userId, lectureId);
   }

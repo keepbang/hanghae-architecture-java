@@ -2,10 +2,14 @@ package com.hhplus.architecture.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.hhplus.architecture.dto.ApplyCounterDto;
 import com.hhplus.architecture.dto.CreateLectureRequest;
+import com.hhplus.architecture.dto.LectureDto;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.util.List;
+import java.util.Objects;
+import java.util.OptionalLong;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -55,16 +59,17 @@ public class LectureIntegrationTest {
           long lectureId = (finalI % 3) + 1L; // 특강 아이디.
           lectureService.userApply(finalI + 1L, lectureId); // 특강 신청
         } catch (Exception e) {
-          queue.add(finalI + 1L);
+          queue.add((long) finalI);
         }
         latch.countDown();
       });
     }
+
     latch.await();
     // then
-    Long count1 = lectureService.countApplyUserByLectureId(1L);
-    Long count2 = lectureService.countApplyUserByLectureId(2L);
-    Long count3 = lectureService.countApplyUserByLectureId(3L);
+    Long count1 = lectureService.countApplyUserByLectureId(1L).applyCount();
+    Long count2 = lectureService.countApplyUserByLectureId(2L).applyCount();
+    Long count3 = lectureService.countApplyUserByLectureId(3L).applyCount();
 
     // 3특강에 신청 수강생 수는 30이여야 한다.
     assertThat(count1).isEqualTo(30L);
@@ -91,6 +96,52 @@ public class LectureIntegrationTest {
                 .toEpochMilli()
         )
     );
+  }
+
+  // 5명의 사용자가 5번씩 신청을 했을 때 5번의 신청이 되야한다.
+  @Test
+  @DisplayName("5명의 사용자가 5번씩 신청할 경우")
+  void applyLecture_Concurrent_여러번_신청() throws InterruptedException {
+    // given
+    int numberOfThreads = 25;
+    ExecutorService executorService = Executors.newFixedThreadPool(10);
+    CountDownLatch latch = new CountDownLatch(numberOfThreads);
+
+    // 특강 등록
+    saveLecture("월요일 특강");
+
+    Long lectureId = lectureService.findAllLectures()
+        .stream()
+        .mapToLong(LectureDto::id)
+        .max()
+        .getAsLong();
+
+    // 실패한 사용자를 담기위한 큐
+    ConcurrentLinkedQueue<Long> queue = new ConcurrentLinkedQueue<>();
+
+    // when - 특강 신청
+    for (int i = 0; i < numberOfThreads; i++) {
+      int finalI = i;
+      executorService.execute(() -> {
+        try {
+          long userId = (finalI % 5) + 1L; // 사용자 아이디
+          lectureService.userApply(userId, lectureId); // 특강 신청
+        } catch (Exception e) {
+          queue.add((long) finalI);
+        }
+        latch.countDown();
+      });
+    }
+    latch.await();
+    // then
+    Long count = lectureService.countApplyUserByLectureId(lectureId).applyCount();
+
+    // 특강에 신청한 수강생은 5명이여야 한다.
+    assertThat(count).isEqualTo(5L);
+
+    // 20번의 요청은 실패해야한다.
+    assertThat(queue.size()).isEqualTo(20L);
+
   }
 
 }

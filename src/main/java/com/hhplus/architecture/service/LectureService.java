@@ -1,5 +1,6 @@
 package com.hhplus.architecture.service;
 
+import com.hhplus.architecture.dto.ApplyCounterDto;
 import com.hhplus.architecture.dto.CreateLectureRequest;
 import com.hhplus.architecture.dto.LectureDto;
 import com.hhplus.architecture.dto.LectureHistoryDto;
@@ -61,18 +62,18 @@ public class LectureService {
    */
   @Transactional
   public LectureHistoryDto userApply(Long userId, Long lectureId) {
-    LectureDto lectureDto = lectureManager.findAndLockById(lectureId);
-
-    lectorValidator.validUserCount(
-        lectureHistoryManager.countApplyByLectureId(lectureId),
-        lectureDto.maxUser()
-    );
+    // 증가된 dto
+    ApplyCounterDto applyCounterDto = lectureManager.findCountAndLockByLectureId(lectureId)
+        .increase();
 
     lectorValidator.validAlreadyApply(
         lectureHistoryManager.isAlreadyApplyByUserIdAndLectureId(userId, lectureId)
     );
 
-    return lectureHistoryManager.save(userId, lectureId);
+    LectureHistoryDto lectureHistoryDto = lectureHistoryManager.save(userId, lectureId);
+    lectureManager.saveApplyCount(lectureId, applyCounterDto);
+
+    return lectureHistoryDto;
   }
 
   /**
@@ -81,8 +82,8 @@ public class LectureService {
    * @param lectureId 특강 아이디.
    * @return 특강 정보.
    */
-  public Long countApplyUserByLectureId(Long lectureId) {
-    return lectureHistoryManager.countApplyByLectureId(lectureId);
+  public ApplyCounterDto countApplyUserByLectureId(Long lectureId) {
+    return lectureManager.findCountAndLockByLectureId(lectureId);
   }
 
   /**

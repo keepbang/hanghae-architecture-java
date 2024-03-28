@@ -15,12 +15,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class LectureValidator {
 
-  public void validUserCount(long applyCount, long maxUser) {
-    if (applyCount >= maxUser) {
-      throw new LectureApplyException("최대 신청수를 초과했습니다.");
-    }
-  }
-
   public void validAlreadyApply(boolean isAlready) {
     if (isAlready) {
       throw new LectureApplyException("이미 신청했습니다.");
