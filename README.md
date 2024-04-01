@@ -1,5 +1,5 @@
 # 특강 신청 서비스 구현
-
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/keepbang/hanghae-architecture-java)](https://hits.seeyoufarm.com)
 
 ## API List
 ### 1. [특강 등록 API](#특강-등록-api) (`추가`)
